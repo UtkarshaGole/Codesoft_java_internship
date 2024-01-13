@@ -1,0 +1,76 @@
+package codeSoft;
+
+import java.util.Scanner;
+
+public class Atm {
+    private BankAccount bankAccount;
+    private Scanner scanner;
+
+    public Atm(double initialBalance) {
+        this.bankAccount = new BankAccount(initialBalance);
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void displayMenu() {
+        System.out.println("\nATM Menu:");
+        System.out.println("1. Withdraw");
+        System.out.println("2. Deposit");
+        System.out.println("3. Check Balance");
+        System.out.println("4. Exit");
+    }
+
+    public void processOption(int option) {
+        switch (option) {
+            case 1:
+                withdraw();
+                break;
+            case 2:
+                deposit();
+                break;
+            case 3:
+                checkBalance();
+                break;
+            case 4:
+                System.out.println("Thank you for using the ATM. Goodbye!");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid option. Please choose again.");
+        }
+    }
+
+    private void withdraw() {
+        System.out.print("Enter the amount to withdraw: ");
+        double amount = scanner.nextDouble();
+
+        if (bankAccount.withdraw(amount)) {
+            System.out.println("Withdrawal successful. Remaining balance: " + bankAccount.getBalance());
+        } else {
+            System.out.println("Withdrawal failed. Insufficient balance or invalid amount.");
+        }
+    }
+
+    private void deposit() {
+        System.out.print("Enter the amount to deposit: ");
+        double amount = scanner.nextDouble();
+
+        bankAccount.deposit(amount);
+        System.out.println("Deposit successful. Updated balance: " + bankAccount.getBalance());
+    }
+
+    private void checkBalance() {
+        System.out.println("Current balance: " + bankAccount.getBalance());
+    }
+
+    public static void main(String[] args) {
+        double initialBalance = 1000.0; // Initial balance for the bank account
+        Atm atm = new Atm(initialBalance);
+
+        while (true) {
+            atm.displayMenu();
+            System.out.print("Choose an option (1-4): ");
+            int option = atm.scanner.nextInt();
+            atm.processOption(option);
+        }
+    }
+}
